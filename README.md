@@ -36,7 +36,7 @@ Table of Contents
 
 Prerequisites
 ------------------------
-* Running this simulation roughly 23G of Ram (by default only pod1, superspines and edge are started. Full topology will use ~35G)
+* Running this simulation roughly uses 23G of Ram (by default only pod1, superspines and edge are started. Full topology will uses ~35G)
 * Internet connectivity is required from the hypervisor. Multiple packages are installed on both the switches and servers when the lab is created.
 * Download this repository locally with `git clone https://github.com/CumulusNetworks/cl-piat.git` 
 * Download the NetQ Telemetry Server from https://cumulusnetworks.com/downloads/#product=NetQ%20Virtual&hypervisor=Vagrant. You need to be logged into the site to access this.  Choose NetQ 1.3.
@@ -53,7 +53,7 @@ Using Libvirt+KVM
 * Start the topology with the script `./evpn-symmetric-edge.sh`. This will run the vagrant commands to start the topology. By default only pod1, superspines and edge devices are started. This should provide sufficient devices for most demos, but the topology would give the possibility to run the demo on a larger environment. 
 
 Next, when fully booted:
-* Enter the environment by running `vagrant ssh oob-mgmt-server` from the vx-topology directory. On the oob-server, the same git repository is cloned that hold the necessary Ansible playbooks. Start provisioning the environment by running `./provision.sh` from the `cl-piat/automation` directory. This will run an ansible playbook that provisions the network devicees and servers. Running the full playbook when the topology isn't provisioned yet, can take several minutes, because several software packages have to be installed (be patient).
+* Enter the environment by running `vagrant ssh oob-mgmt-server` from the vx-topology directory. On the oob-server, the same git repository is cloned that hold the necessary Ansible playbooks. Start provisioning the environment by running `./provision.sh` from the `cl-piat/automation` directory. This will run an ansible playbook that provisions the network devices and servers. Running the full playbook when the topology isn't provisioned yet, can take several minutes, because several software packages have to be installed (be patient).
 
 Using Virtualbox
 ------------------------
@@ -64,7 +64,7 @@ Demo explanation
 This section explains how the demo has been built. The "running demo" section shows some examples that can be done during a live demo.
 
 ### Tenant setup
-The environment is built with three tenants that are routed in the EVPN L3 overlay. Each leaf is provisioned with three VRFs/L3VNIs. Each VRFs has two IPv4 and IPv6 SVIs that could be different services on a host. These SVIs are tagged in 6 vlans to each server. The servers are setup with a new kernel, VRF support and VRF tools. This is done for two reasons, 1. Show the development of Linux tools by Cumulus and how it is applicable beyond just switches, 2. makeing sure that each "service" has it's own routing table and can be configured with a default route (statically for IPv4, through RAs with IPv6).
+The environment is built with three tenants that are routed in the EVPN L3 overlay. Each leaf is provisioned with three VRFs/L3VNIs. Each VRFs has two IPv4 and IPv6 SVIs that could be different services on a host. These SVIs are tagged in 6 vlans to each server. The servers are setup with a new kernel, VRF support and VRF tools. This is done for two reasons, 1. Show the development of Linux tools by Cumulus and how it is applicable beyond just switches, 2. making sure that each "service" has it's own routing table and can be configured with a default route (statically for IPv4, through RAs with IPv6).
 
 ![Tenants](diagrams/cl-piat-tenants.png)
 
@@ -76,7 +76,7 @@ This environment is fully provisioned with Ansible in combination with Jinja2 te
 
 ![Orchestration](diagrams/cl-piat-orchestration.png)
 
-In most demos we have shown how orchestration of the configuration can be done through editting the Ansible variable files. While this might work in some environments, this wouldn't be always the case. In an environment with infrastructure data in multiple places, you would like to have a single source of truth. In this case Netbox (opensource IPAM, developed bij DigitalOcean) was used to store the variables needed to configure the infrastructure. In this demo the Netbox is the source of truth and orchestration is done as shown in the above diagram. The script "netbox.py" (Netbox importer), uses the Netbox api to generate a json file that contains the variable file for Ansible. Ansible uses the variables to generate the configuration files based on Jinja templates.
+In most demos we have shown how orchestration of the configuration can be done through editing the Ansible variable files. While this might work in some environments, this wouldn't be always the case. In an environment with infrastructure data in multiple places, you would like to have a single source of truth. In this case Netbox (opensource IPAM, developed bij DigitalOcean) was used to store the variables needed to configure the infrastructure. In this demo the Netbox is the source of truth and orchestration is done as shown in the above diagram. The script "netbox.py" (Netbox importer), uses the Netbox api to generate a json file that contains the variable file for Ansible. Ansible uses the variables to generate the configuration files based on Jinja templates.
 
 Running the Demo
 ------------------------
@@ -224,7 +224,7 @@ edge01            vlan2504(rtr02)                  tenant2          65401      6
 ```
 
 ### Grafana
-During deployment Grafana is installed as a container on the netq-ts server. To make the gui accessable, we need to setup a remote ssh tunnel (from the NetQ-ts VM) to a host that is publicly accessible: `screen ssh -NR 3001:localhost:3000 <user>@<host>`. Exit the screen with ctcl+A,D after authentication. Unfortunately the current Ansible module for Grafana has a bug that prevents the dashboards to be automatically provisioned (https://github.com/ansible/ansible/issues/39663). When the interface is accessible (default user/pass: admin / CumulusLinux!), there are two dashboards available that can be imported into Grafana in the roles/telemetry/files directory. Import them both to have access to them.
+During deployment Grafana is installed as a container on the netq-ts server. To make the gui accessable, we need to setup a remote ssh tunnel (from the NetQ-ts VM) to a host that is publicly accessible: `screen ssh -NR 3001:localhost:3000 <user>@<host>`. Exit the screen with ctrl+A,D after authentication. Unfortunately the current Ansible module for Grafana has a bug that prevents the dashboards to be automatically provisioned (https://github.com/ansible/ansible/issues/39663). When the interface is accessible (default user/pass: admin / CumulusLinux!), there are two dashboards available that can be imported into Grafana in the roles/telemetry/files directory. Import them both to have access to them.
 
 The IP-fabric dashboard will display all interfaces on a specified switch:
 ![IP-Fabric](images/grafana-ip-fabric.png)
@@ -235,13 +235,13 @@ The detailed dashboard allows for a more granular selection of interfaces on mul
 By default you will see only low traffic volumes. This repository also has an Ansible playbook that will use iperf to setup a full mesh of streams in all VRFs to show the traffic in the Grafana graphs. Use `ansible-playbook traffic.yaml -l servers` to start the traffic flows for 5 minutes.
 
 ### Netbox
-Like Grafana, Netbox is also deployed as a container on the netq-ts server. To make the gui accessable, we need to setup a remote ssh tunnel (from the NetQ-ts VM) to a host that is publicly accessible: `screen ssh -NR 3002:localhost:32768 <user>@<host>`. Exit the screen with ctcl+A,D after authentication. When the interface is accessible (default user/pass: admin / CumulusLinux!) changes can be made to the configuration during a demo. These changes are imported to the Ansible variables and deployed to the infrastructure. These steps have to be done manually (although they can be automated) by running the `netbox.py` script and running the ansible-playbook, e.g `ansible-playbook deploy.yml -l network`.
+Like Grafana, Netbox is also deployed as a container on the netq-ts server. To make the gui accessable, we need to setup a remote ssh tunnel (from the NetQ-ts VM) to a host that is publicly accessible: `screen ssh -NR 3002:localhost:32768 <user>@<host>`. Exit the screen with ctrl+A,D after authentication. When the interface is accessible (default user/pass: admin / CumulusLinux!) changes can be made to the configuration during a demo. These changes are imported to the Ansible variables and deployed to the infrastructure. These steps have to be done manually (although they can be automated) by running the `netbox.py` script and running the ansible-playbook, e.g `ansible-playbook deploy.yml -l network`.
 
 ![Detailed](images/netbox-overview.png)
 
 During two changes would be good to see:
 
-Change the status of one or more devices in the GUI and destroy/restart the devices so they have an emptry configuration `vagrant destroy leaf01;vagrant up leaf01`. Show that the device won't be provisioned until the status has been set to "Active" by running the `netbox.py` script and the Ansible playbook `ansible-playbook deploy.yml -l leaf01`.
+Change the status of one or more devices in the GUI and destroy/restart the devices so they have an empty configuration `vagrant destroy leaf01;vagrant up leaf01`. Show that the device won't be provisioned until the status has been set to "Active" by running the `netbox.py` script and the Ansible playbook `ansible-playbook deploy.yml -l leaf01`.
 ![Detailed](images/netbox-status.png)
 
 We can also create an additional IRB interface on a device. Keep in mind that if it is intended to do on an mlag pair, it should be done on both.
